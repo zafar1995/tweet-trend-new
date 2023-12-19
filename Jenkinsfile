@@ -1,3 +1,4 @@
+def docker 
 def registry = 'https://valaxyoss.jfrog.io'
 def imageName = 'valaxyoss.jfrog.io/valaxy-docker/ttrend'
 def version   = '2.1.2'
