@@ -1,4 +1,7 @@
 def registry = 'https://valaxyoss.jfrog.io'
+def imageName = 'valaxyoss.jfrog.io/valaxy-docker/ttrend'
+def version   = '2.0.2'
+
 pipeline {
     agent {
         node {
@@ -56,6 +59,28 @@ pipeline {
             
             }
         }   
-    }   
+    } 
+
+    stage(" Docker Build ") {
+      steps {
+        script {
+           echo '<--------------- Docker Build Started --------------->'
+           app = docker.build(imageName+":"+version)
+           echo '<--------------- Docker Build Ends --------------->'
+        }
+      }
+    }
+
+            stage (" Docker Publish "){
+        steps {
+            script {
+               echo '<--------------- Docker Publish Started --------------->'  
+                docker.withRegistry(registry, 'valaxyoss.jfrog.io'){
+                    app.push()
+                }    
+               echo '<--------------- Docker Publish Ended --------------->'  
+            }
+        }
+    }
 }
 }
