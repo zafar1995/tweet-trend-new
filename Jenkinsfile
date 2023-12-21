@@ -87,7 +87,7 @@ pipeline {
                 script {
                     echo '<--------------- Docker Run Started --------------->'  
                     // Pull the Docker image from the registry
-                    docker.image(imageName).pull()
+                    docker.image(imageName+":"+version).pull()
                     
                     // Run the Docker container
                     docker.container(ttrend, "--publish=8000:8000") {
