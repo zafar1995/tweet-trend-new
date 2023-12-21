@@ -82,5 +82,21 @@ pipeline {
             }
         }
     }
+        stage("Docker Run") {
+            steps {
+                script {
+                    echo '<--------------- Docker Run Started --------------->'  
+                    // Pull the Docker image from the registry
+                    docker.image(imageName).pull()
+                    
+                    // Run the Docker container
+                    docker.container(ttrend, "--publish=8000:8000") {
+                        // Additional steps or commands to run within the container
+                        // For example: sh 'echo "Hello from Docker container!"'
+                    }
+                    echo '<--------------- Docker Run Ended --------------->'  
+                }
+            }
+        }
 }
 }
