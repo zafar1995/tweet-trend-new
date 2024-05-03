@@ -115,12 +115,12 @@
 		</plugins>
 	</build>
 
-	<distributionManagement>
+<!-- 	<distributionManagement>
 		<repository>
 			<id>dev</id>
 			<url>/var/lib/jenkins/workspace/tweet-trend-new_main/jarstaging</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 
 </project>
