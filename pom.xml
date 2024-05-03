@@ -118,7 +118,7 @@
 	<distributionManagement>
 		<repository>
 			<id>dev</id>
-			<url>file://jarstaging</url>
+			<url>/var/lib/jenkins/workspace/tweet-trend-new_main/jarstaging</url>
 		</repository>
 	</distributionManagement>
 
