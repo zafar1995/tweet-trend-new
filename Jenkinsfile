@@ -15,14 +15,14 @@ pipeline {
         stage("build"){
             steps {
                  echo "----------- build started ----------"
-                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                bat 'mvn clean deploy -Dmaven.test.skip=true'
                  echo "----------- build complted ----------"
             }
         }
         stage("test"){
             steps{
                 echo "----------- unit test started ----------"
-                sh 'mvn surefire-report:report'
+                bat 'mvn surefire-report:report'
                  echo "----------- unit test Complted ----------"
             }
         }
@@ -33,14 +33,14 @@ pipeline {
     }
     steps{
     withSonarQubeEnv('valaxy-sonarqube-server') { // If you have configured more than one global server connection, you can specify its name
-      sh "${scannerHome}/bin/sonar-scanner"
+      bat "${scannerHome}/bin/sonar-scanner"
     }
     }
   }
-        stage("Jar Publish") {
+        stage("Jar Publibat") {
         steps {
             script {
-                    echo '<--------------- Jar Publish Started --------------->'
+                    echo '<--------------- Jar Publibat Started --------------->'
                      def server = Artifactory.newServer url:registry+"/artifactory" ,  credentialsId:"valaxyoss.jfrog.io"
                      def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}";
                      def uploadSpec = """{
@@ -50,14 +50,14 @@ pipeline {
                               "target": "valaxy-libs-release-local/{1}",
                               "flat": "false",
                               "props" : "${properties}",
-                              "exclusions": [ "*.sha1", "*.md5"]
+                              "exclusions": [ "*.bata1", "*.md5"]
                             }
                          ]
                      }"""
                      def buildInfo = server.upload(uploadSpec)
                      buildInfo.env.collect()
-                     server.publishBuildInfo(buildInfo)
-                     echo '<--------------- Jar Publish Ended --------------->'  
+                     server.publibatBuildInfo(buildInfo)
+                     echo '<--------------- Jar Publibat Ended --------------->'  
             
             }
         }   
@@ -73,14 +73,14 @@ pipeline {
       }
     }
 
-            stage (" Docker Publish "){
+            stage (" Docker Publibat "){
         steps {
             script {
-               echo '<--------------- Docker Publish Started --------------->'  
+               echo '<--------------- Docker Publibat Started --------------->'  
                 docker.withRegistry(registry, 'valaxyoss.jfrog.io'){
-                    app.push()
+                    app.pubat()
                 }    
-               echo '<--------------- Docker Publish Ended --------------->'  
+               echo '<--------------- Docker Publibat Ended --------------->'  
             }
         }
     }
@@ -92,9 +92,9 @@ pipeline {
                     docker.image(imageName+":"+version).pull()
                     
                     // Run the Docker container
-                    docker.container(ttrend, "--publish=8000:8000") {
+                    docker.container(ttrend, "--publibat=8000:8000") {
                         // Additional steps or commands to run within the container
-                        // For example: sh 'echo "Hello from Docker container!"'
+                        // For example: bat 'echo "Hello from Docker container!"'
                     }
                     echo '<--------------- Docker Run Ended --------------->'  
                 }
