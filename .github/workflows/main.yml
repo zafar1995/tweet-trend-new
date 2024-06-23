@@ -1,0 +1,28 @@
+name: Run Ansible Playbook
+
+on:
+  workflow_dispatch:
+    inputs:
+      emp_id:
+        description: 'Employee ID'
+        required: true
+        type: string
+      password:
+        description: 'Password'
+        required: true
+        type: string
+      incident_number:
+        description: 'Incident Number'
+        required: true
+        type: string
+
+jobs:
+  run-playbook:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Ansible
+      uses: dawidd6/action-install-ansible@v2
