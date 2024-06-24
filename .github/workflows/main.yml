@@ -20,9 +20,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible
 
-      - name: Set up Git
-        run: |
-          git config --global url."https://{{ secrets.GITHUBTOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+      # - name: Set up Git
+      #   run: |
+      #     git config --global url."https://{{ secrets.GITHUBTOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
       - name: Install Ansible Collection
         run: ansible-galaxy collection install janikvonrotz.ansible_build
