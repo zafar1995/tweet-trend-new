@@ -1,28 +1,34 @@
-name: Install Ansible Collection
+name: Checkbox Input Example
 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      checkbox_options:
+        description: 'Select options (comma-separated, e.g., option1,option2)'
+        required: true
+        default: ''
 
 jobs:
-  install-collection:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'  # specify the Python version
+    - name: Parse checkbox values
+      id: parse_checkbox
+      run: |
+        echo "Selected options: ${{ github.event.inputs.checkbox_options }}"
+        IFS=',' read -r -a options <<< "${{ github.event.inputs.checkbox_options }}"
+        for option in "${options[@]}"; do
+          echo "Option: $option"
+        done
 
-      - name: Install Ansible
-        run: |
-          python -m pip install --upgrade pip
-          pip install ansible
+    - name: Conditional Step for Option 1
+      if: contains(github.event.inputs.checkbox_options, 'option1')
+      run: echo "Running because option1 is selected"
 
-      # - name: Set up Git
-      #   run: |
-      #     git config --global url."https://{{ secrets.GITHUBTOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-
-      - name: Install Ansible Collection
-        run: ansible-galaxy collection install janikvonrotz.ansible_build
+    - name: Conditional Step for Option 2
+      if: contains(github.event.inputs.checkbox_options, 'option2')
+      run: echo "Running because option2 is selected"
