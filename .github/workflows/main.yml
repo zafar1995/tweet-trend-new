@@ -2,33 +2,19 @@ name: Checkbox Input Example
 
 on:
   workflow_dispatch:
-    inputs:
-      checkbox_options:
-        description: 'Select options (comma-separated, e.g., option1,option2)'
-        required: true
-        default: ''
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Parse checkbox values
-      id: parse_checkbox
-      run: |
-        echo "Selected options: ${{ github.event.inputs.checkbox_options }}"
-        IFS=',' read -r -a options <<< "${{ github.event.inputs.checkbox_options }}"
-        for option in "${options[@]}"; do
-          echo "Option: $option"
-        done
-
-    - name: Conditional Step for Option 1
-      if: contains(github.event.inputs.checkbox_options, 'option1')
-      run: echo "Running because option1 is selected"
-
-    - name: Conditional Step for Option 2
-      if: contains(github.event.inputs.checkbox_options, 'option2')
-      run: echo "Running because option2 is selected"
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test
+      
